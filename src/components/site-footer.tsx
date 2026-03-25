@@ -7,10 +7,10 @@ export function SiteFooter() {
 
   return (
     <footer id="rodape" className="mt-auto border-t border-zinc-700 bg-zinc-900 text-zinc-300">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div className="site-container py-12 lg:py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-10">
           <div className="lg:col-span-1">
-            <p className="border-l-4 border-[#006633] pl-3 font-serif text-lg font-semibold text-white">
+            <p className="border-l-4 border-[#d33a2c] pl-3 font-serif text-lg font-semibold text-white">
               {siteConfig.name}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-zinc-400">{siteConfig.institution}</p>
@@ -83,7 +83,7 @@ export function SiteFooter() {
               href={instagram.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded border border-zinc-600 bg-zinc-800/80 px-3 py-2 text-sm font-medium text-white transition hover:border-[#006633] hover:bg-zinc-800"
+              className="mt-4 inline-flex items-center gap-2 rounded border border-zinc-600 bg-zinc-800/80 px-3 py-2 text-sm font-medium text-white transition hover:border-[#d33a2c] hover:bg-zinc-800"
             >
               <Instagram className="size-5 shrink-0" aria-hidden />
               <span>{instagram.handle}</span>
@@ -109,7 +109,9 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-zinc-800 bg-zinc-950 py-4 text-center text-xs text-zinc-500">
-        © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos reservados.
+        <div className="site-container">
+          © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos reservados.
+        </div>
       </div>
     </footer>
   );

@@ -50,15 +50,15 @@
 }
 
 :root {
-  /* Fundo e texto: estilo portal institucional (ex.: ufc.br) */
-  --background: oklch(0.98 0.005 95);
-  --foreground: oklch(0.25 0.02 260);
+  /* Tom papel + acento editorial (inspiração: smashingmagazine.com) */
+  --background: #fffdf9;
+  --foreground: oklch(0.22 0.02 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Verde institucional (~#006633) */
-  --primary: oklch(0.38 0.11 155);
+  /* Acento editorial (~#d33a2c, estilo smashingmagazine.com) */
+  --primary: oklch(0.52 0.19 25);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -132,8 +132,38 @@
 }
 
 @layer utilities {
+  /* StPageFlip / react-pageflip: não cortar a animação 3D ao virar página */
+  .flipbook-shell {
+    overflow: visible;
+  }
+  .flipbook-shell .stf__parent,
+  .flipbook-root.stf__parent {
+    overflow: visible !important;
+  }
+
   .magazine-page-enter {
     animation: magazine-page-enter 0.35s ease-out both;
+  }
+
+  /**
+   * Layout editorial (inspiração: awwwards.com) — largura máxima ~1440px,
+   * margens horizontais fluidas em qualquer dispositivo.
+   */
+  .site-container {
+    @apply mx-auto w-full max-w-[90rem] px-[clamp(1rem,5vw,2.75rem)];
+  }
+
+  .site-section-y {
+    @apply py-[clamp(2.5rem,7vw,5rem)];
+  }
+
+  .site-hero-title {
+    font-size: clamp(1.875rem, 4vw + 1rem, 3.75rem);
+    line-height: 1.08;
+  }
+
+  .site-hero-lead {
+    font-size: clamp(1rem, 0.5vw + 0.9rem, 1.25rem);
   }
 }
 

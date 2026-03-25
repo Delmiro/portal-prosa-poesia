@@ -1,6 +1,6 @@
 /**
- * Prints exportados para `public/`, em ordem cronológica do nome do ficheiro
- * (equivale à ordem das páginas 1–20 do PDF, se as capturas foram feitas em sequência).
+ * Páginas da edição 20 — ficheiros na raiz de `public/` (nomes das capturas).
+ * Ordem = ordem das páginas do PDF (1–20).
  */
 const PREFIX = "Captura de tela 2026-03-25 ";
 
@@ -27,8 +27,12 @@ const ORDEM_HORARIOS = [
   "120115",
 ] as const;
 
-export const edicao20PrintPages = ORDEM_HORARIOS.map(
-  (h) => `/${PREFIX}${h}.png`
+function publicImageUrl(fileName: string): string {
+  return `/${encodeURIComponent(fileName)}`;
+}
+
+export const edicao20PrintPages = ORDEM_HORARIOS.map((h) =>
+  publicImageUrl(`${PREFIX}${h}.png`)
 ) as readonly string[];
 
 export const EDICAO_20_PRINT_COUNT = edicao20PrintPages.length;

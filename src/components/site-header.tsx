@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
-import { Instagram, Menu, Search } from "lucide-react";
+import { BookOpen, Instagram, Menu, Search, X } from "lucide-react";
 import { mainNav, siteConfig } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
-/** Inspiração: portal institucional (ufc.br) — azul, links azuis, item ativo laranja. */
+/** Topo institucional; links e ativos no estilo editorial (smashingmagazine.com). */
 const BLUE_TOP = "bg-[#003366]";
-const LINK_BLUE = "text-[#0054a6] hover:text-[#003d7a] hover:underline";
-const ACTIVE_ORANGE = "border-t-[3px] border-[#e87722] text-[#c45f12]";
+const LINK_ACCENT = "text-[#d33a2c] hover:text-[#a82a20] hover:underline";
+const ACTIVE_NAV =
+  "border-t-[3px] border-[#d33a2c] bg-[#fffdf9]/80 text-[#1a1a1a] font-medium";
 
 const quickLinks = [
   { href: "/autores", label: "Autores" },
@@ -32,6 +33,7 @@ export function SiteHeader() {
   const searchId = useId();
   const [fontPct, setFontPct] = useState(100);
   const [highContrast, setHighContrast] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontPct}%`;
@@ -41,6 +43,21 @@ export function SiteHeader() {
     document.documentElement.classList.toggle("high-contrast-portal", highContrast);
     return () => document.documentElement.classList.remove("high-contrast-portal");
   }, [highContrast]);
+
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (mobileNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileNavOpen]);
 
   const onSearch = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,187 +71,62 @@ export function SiteHeader() {
   );
 
   return (
-    <header id="topo" className="relative z-10 text-zinc-900 shadow-sm">
-      {/* 1 — Barra superior (gov / institucional) */}
-      <div className={cn(BLUE_TOP, "text-white")}>
-        <div className="mx-auto flex max-w-7xl items-center justify-end gap-2 px-3 py-1.5 sm:px-5">
+    <header id="topo" className="relative z-10 text-zinc-900">
+      {/* ——— Mobile: barra compacta (estilo apps de notícias / NYT) ——— */}
+      <div className="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 shadow-[0_1px_0_rgba(0,0,0,0.06)] backdrop-blur-md supports-[backdrop-filter]:bg-white/90 lg:hidden">
+        <div
+          className="site-container grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-2 py-2.5 pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))]"
+          style={{ minHeight: "3.25rem" }}
+        >
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="size-10 shrink-0 text-zinc-900 hover:bg-zinc-100"
+            aria-label="Abrir menu"
+            aria-expanded={mobileNavOpen}
+            aria-controls="menu-principal-mobile"
+            onClick={() => setMobileNavOpen(true)}
+          >
+            <Menu className="size-[1.35rem]" strokeWidth={2} />
+          </Button>
+
           <Link
-            href="/sobre"
-            className="rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
+            href="/"
+            className="min-w-0 justify-self-center text-center font-serif text-[0.95rem] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-base"
           >
-            Acesso à Informação
+            <span className="line-clamp-2">{siteConfig.name}</span>
           </Link>
-          <a
-            href="https://www.gov.br/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
-          >
-            <span aria-hidden>🇧🇷</span>
-            BRASIL
-          </a>
-        </div>
-      </div>
 
-      {/* 2 — Atalhos de acessibilidade + tamanho da fonte */}
-      <div className="border-b border-zinc-200/80 bg-zinc-100">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-3 gap-y-1.5 px-3 py-1.5 text-[11px] sm:px-5 sm:text-xs">
-          <nav aria-label="Atalhos de acessibilidade" className="flex flex-wrap items-center gap-x-1 text-[#0054a6]">
-            <a href="#conteudo" className={LINK_BLUE}>
-              Ir para conteúdo
-            </a>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <a href="#menu-principal" className={LINK_BLUE}>
-              Ir para menu
-            </a>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <a href="#rodape" className={LINK_BLUE}>
-              Ir para rodapé
-            </a>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <button
-              type="button"
-              className={cn(LINK_BLUE, "cursor-pointer bg-transparent font-inherit")}
-              onClick={() => setHighContrast((v) => !v)}
-              aria-pressed={highContrast}
-            >
-              Alto contraste
-            </button>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <Link href="/contato" className={LINK_BLUE}>
-              Acessibilidade
-            </Link>
-          </nav>
-          <div className="flex flex-wrap items-center gap-x-1 text-zinc-600">
-            <span className="font-medium">Fonte:</span>
-            <button
-              type="button"
-              className="cursor-pointer bg-transparent font-semibold text-[#0054a6] hover:underline"
-              onClick={() => setFontPct((p) => Math.min(130, p + 6))}
-            >
-              A+
-            </button>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <button
-              type="button"
-              className="cursor-pointer bg-transparent font-semibold text-[#0054a6] hover:underline"
-              onClick={() => setFontPct((p) => Math.max(82, p - 6))}
-            >
-              A-
-            </button>
-            <span className="text-zinc-400" aria-hidden>
-              |
-            </span>
-            <button
-              type="button"
-              className="cursor-pointer bg-transparent font-semibold text-[#0054a6] hover:underline"
-              onClick={() => setFontPct(100)}
-            >
-              A
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 3 — Logo, links rápidos, busca e redes */}
-      <div className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-3 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8 sm:px-5 sm:py-5">
-          <Link href="/" className="group flex max-w-xl shrink-0 gap-3 sm:gap-4">
-            <span
+          <div className="flex shrink-0 items-center justify-end gap-1">
+            <Link
+              href="/edicoes/20/revista"
               className={cn(
-                "flex h-14 w-14 shrink-0 items-center justify-center rounded-sm font-bold uppercase leading-none text-white sm:h-[4.5rem] sm:w-[4.5rem] sm:text-sm",
-                BLUE_TOP
+                buttonVariants({ size: "sm" }),
+                "h-9 gap-1 border-0 bg-[#d33a2c] px-2.5 text-xs font-semibold text-white shadow-none hover:bg-[#b32d21] sm:px-3"
               )}
-              aria-hidden
+              aria-label="Ler revista"
             >
-              AL
-            </span>
-            <span className="min-w-0 text-left leading-tight">
-              <span className="block font-serif text-[10px] font-semibold uppercase tracking-wide text-zinc-600 sm:text-[11px]">
-                Periódico da Academia de Letras e Artes
-              </span>
-              <span className="mt-0.5 block font-serif text-base font-semibold uppercase tracking-tight text-zinc-900 sm:text-lg md:text-xl">
-                Antônio Sales
-              </span>
-              <span className="mt-1 block font-serif text-lg font-semibold leading-snug text-zinc-900 sm:text-xl md:text-2xl">
-                {siteConfig.name}
-              </span>
-            </span>
-          </Link>
-
-          <div className="flex min-w-0 flex-1 flex-col items-stretch gap-3 sm:max-w-xl sm:items-end">
-            <nav aria-label="Serviços e atalhos" className="flex flex-wrap justify-start gap-x-4 gap-y-1 sm:justify-end">
-              {quickLinks.map((item) => (
-                <Link key={item.href} href={item.href} className={cn("text-xs font-medium sm:text-sm", LINK_BLUE)}>
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-            <form
-              onSubmit={onSearch}
-              className="relative w-full sm:max-w-md"
-              role="search"
-              aria-label="Procurar no portal"
+              <BookOpen className="size-4 shrink-0" />
+              <span className="hidden min-[380px]:inline">Revista</span>
+            </Link>
+            <a
+              href={siteConfig.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex size-9 shrink-0 items-center justify-center rounded-full text-zinc-700 transition hover:bg-zinc-100"
+              aria-label={`Instagram ${siteConfig.instagram.handle}`}
             >
-              <label htmlFor={searchId} className="sr-only">
-                Procurar no portal
-              </label>
-              <input
-                id={searchId}
-                name="q"
-                type="search"
-                placeholder="Procurar..."
-                className="w-full rounded border border-zinc-300 bg-zinc-50 py-2 pr-10 pl-3 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-[#0054a6] focus:outline-none focus:ring-1 focus:ring-[#0054a6]"
-                autoComplete="off"
-              />
-              <button
-                type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-1.5 text-zinc-500 hover:bg-zinc-200 hover:text-[#0054a6]"
-                aria-label="Pesquisar"
-              >
-                <Search className="size-4" />
-              </button>
-            </form>
-            <div className="flex items-center justify-start gap-2 sm:justify-end">
-              <a
-                href={siteConfig.instagram.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex size-8 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-600 hover:border-[#0054a6] hover:text-[#0054a6]"
-                aria-label={`Instagram ${siteConfig.instagram.handle}`}
-              >
-                <Instagram className="size-4" />
-              </a>
-              <a
-                href={siteConfig.sitePublicacao.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-zinc-300 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 hover:border-[#0054a6] hover:text-[#0054a6] sm:text-[11px]"
-              >
-                Site
-              </a>
-            </div>
+              <Instagram className="size-[1.15rem]" />
+            </a>
           </div>
         </div>
-      </div>
 
-      {/* 4 — Menu principal (item ativo: borda superior laranja) */}
-      <div className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-2 sm:px-4">
+        <div className="border-t border-zinc-100 bg-zinc-50/80">
           <nav
             id="menu-principal"
-            className="hidden min-h-[3rem] flex-1 flex-wrap items-stretch justify-center gap-0 lg:flex xl:justify-start"
-            aria-label="Menu principal"
+            className="site-container flex flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Secções do portal"
           >
             {mainNav.map((item) => {
               const active = isNavActive(pathname, item.href);
@@ -243,8 +135,10 @@ export function SiteHeader() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "inline-flex items-center border-t-[3px] border-transparent px-2.5 py-2.5 text-sm font-normal text-[#0054a6] transition-colors hover:bg-zinc-50 xl:px-3.5",
-                    active && ACTIVE_ORANGE
+                    "shrink-0 whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-[0.8rem] font-medium text-zinc-600 transition first:pl-[max(0.25rem,env(safe-area-inset-left))] last:pr-[max(0.25rem,env(safe-area-inset-right))] sm:text-sm",
+                    active
+                      ? "border-[#d33a2c] text-[#d33a2c]"
+                      : "border-transparent hover:text-[#d33a2c]"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
@@ -253,56 +147,308 @@ export function SiteHeader() {
               );
             })}
           </nav>
+        </div>
+      </div>
 
-          <div className="ml-auto flex items-center gap-2 py-2 lg:ml-0 lg:shrink-0">
+      {/* ——— Desktop (lg+): cabeçalho institucional completo ——— */}
+      <div className="hidden shadow-sm lg:block">
+        <div className={cn(BLUE_TOP, "text-white")}>
+          <div className="site-container flex items-center justify-end gap-2 py-1.5">
             <Link
-              href="/edicoes/20/revista"
-              className={cn(
-                buttonVariants({ size: "sm" }),
-                "gap-1.5 border-0 bg-[#003366] px-3 text-white shadow-none hover:bg-[#00264d]"
-              )}
+              href="/sobre"
+              className="rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
             >
-              <span className="hidden sm:inline">Ler revista</span>
-              <span className="sm:hidden">Revista</span>
+              Acesso à Informação
+            </Link>
+            <a
+              href="https://www.gov.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
+            >
+              <span aria-hidden>🇧🇷</span>
+              BRASIL
+            </a>
+          </div>
+        </div>
+
+        <div className="border-b border-zinc-200/80 bg-zinc-100">
+          <div className="site-container flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 py-1.5 text-[11px] sm:text-xs">
+            <nav
+              aria-label="Atalhos de acessibilidade"
+              className="flex min-w-0 max-w-full flex-1 flex-wrap items-center gap-x-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              <a href="#conteudo" className={LINK_ACCENT}>
+                Ir para conteúdo
+              </a>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <a href="#menu-principal-desktop" className={LINK_ACCENT}>
+                Ir para menu
+              </a>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <a href="#rodape" className={LINK_ACCENT}>
+                Ir para rodapé
+              </a>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <button
+                type="button"
+                className={cn(LINK_ACCENT, "cursor-pointer bg-transparent font-inherit")}
+                onClick={() => setHighContrast((v) => !v)}
+                aria-pressed={highContrast}
+              >
+                Alto contraste
+              </button>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <Link href="/contato" className={LINK_ACCENT}>
+                Acessibilidade
+              </Link>
+            </nav>
+            <div className="flex flex-wrap items-center gap-x-1 text-zinc-600">
+              <span className="font-medium">Fonte:</span>
+              <button
+                type="button"
+                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                onClick={() => setFontPct((p) => Math.min(130, p + 6))}
+              >
+                A+
+              </button>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <button
+                type="button"
+                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                onClick={() => setFontPct((p) => Math.max(82, p - 6))}
+              >
+                A-
+              </button>
+              <span className="text-zinc-400" aria-hidden>
+                |
+              </span>
+              <button
+                type="button"
+                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                onClick={() => setFontPct(100)}
+              >
+                A
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-b border-zinc-200 bg-white">
+          <div className="site-container flex flex-col gap-5 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8 sm:py-5">
+            <Link href="/" className="group flex max-w-xl shrink-0 gap-3 sm:gap-4">
+              <span
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-sm bg-[#d33a2c] font-bold uppercase leading-none text-white sm:h-[4.5rem] sm:w-[4.5rem] sm:text-sm"
+                aria-hidden
+              >
+                AL
+              </span>
+              <span className="min-w-0 text-left leading-tight">
+                <span className="block font-serif text-[10px] font-semibold uppercase tracking-wide text-zinc-600 sm:text-[11px]">
+                  Periódico da Academia de Letras e Artes
+                </span>
+                <span className="mt-0.5 block font-serif text-base font-semibold uppercase tracking-tight text-zinc-900 sm:text-lg md:text-xl">
+                  Antônio Sales
+                </span>
+                <span className="mt-1 block font-serif text-lg font-semibold leading-snug text-zinc-900 sm:text-xl md:text-2xl">
+                  {siteConfig.name}
+                </span>
+              </span>
             </Link>
 
-            <details className="relative lg:hidden">
-              <summary className="list-none [&::-webkit-details-marker]:hidden">
-                <span className="sr-only">Abrir menu</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50"
-                  aria-label="Menu"
-                  aria-controls="menu-principal-mobile"
-                >
-                  <Menu className="size-5" />
-                </Button>
-              </summary>
-              <div
-                id="menu-principal-mobile"
-                className="absolute right-0 z-50 mt-2 max-h-[min(70vh,28rem)] w-[min(100vw-1rem,20rem)] overflow-y-auto rounded-md border border-zinc-200 bg-white py-2 shadow-lg"
+            <div className="flex min-w-0 flex-1 flex-col items-stretch gap-3 sm:max-w-xl sm:items-end">
+              <nav aria-label="Serviços e atalhos" className="flex flex-wrap justify-start gap-x-4 gap-y-1 sm:justify-end">
+                {quickLinks.map((item) => (
+                  <Link key={item.href} href={item.href} className={cn("text-xs font-medium sm:text-sm", LINK_ACCENT)}>
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+              <form
+                onSubmit={onSearch}
+                className="relative w-full sm:max-w-md"
+                role="search"
+                aria-label="Procurar no portal"
               >
-                {mainNav.map((item) => {
-                  const active = isNavActive(pathname, item.href);
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "block px-4 py-2.5 text-sm text-[#0054a6] hover:bg-zinc-50",
-                        active && "bg-orange-50 font-semibold text-[#c45f12]"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
+                <label htmlFor={searchId} className="sr-only">
+                  Procurar no portal
+                </label>
+                <input
+                  id={searchId}
+                  name="q"
+                  type="search"
+                  placeholder="Procurar..."
+                  className="w-full rounded border border-zinc-300 bg-white py-2 pr-10 pl-3 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-[#d33a2c] focus:outline-none focus:ring-1 focus:ring-[#d33a2c]"
+                  autoComplete="off"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-1.5 text-zinc-500 hover:bg-zinc-200 hover:text-[#d33a2c]"
+                  aria-label="Pesquisar"
+                >
+                  <Search className="size-4" />
+                </button>
+              </form>
+              <div className="flex items-center justify-start gap-2 sm:justify-end">
+                <a
+                  href={siteConfig.instagram.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex size-8 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-600 hover:border-[#d33a2c] hover:text-[#d33a2c]"
+                  aria-label={`Instagram ${siteConfig.instagram.handle}`}
+                >
+                  <Instagram className="size-4" />
+                </a>
+                <a
+                  href={siteConfig.sitePublicacao.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-zinc-300 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 hover:border-[#d33a2c] hover:text-[#d33a2c] sm:text-[11px]"
+                >
+                  Site
+                </a>
               </div>
-            </details>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-b border-zinc-200 bg-white">
+          <div className="site-container flex items-center justify-between gap-2 py-0">
+            <nav
+              id="menu-principal-desktop"
+              className="flex min-h-[3rem] flex-1 flex-wrap items-stretch justify-center gap-0 xl:justify-start"
+              aria-label="Menu principal"
+            >
+              {mainNav.map((item) => {
+                const active = isNavActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "inline-flex items-center border-t-[3px] border-transparent px-2.5 py-2.5 text-sm font-normal text-zinc-700 transition-colors hover:bg-[#fffdf9] hover:text-[#d33a2c] xl:px-3.5",
+                      active && ACTIVE_NAV
+                    )}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="flex shrink-0 items-center gap-2 py-2">
+              <Link
+                href="/edicoes/20/revista"
+                className={cn(
+                  buttonVariants({ size: "sm" }),
+                  "gap-1.5 border-0 bg-[#d33a2c] px-3 text-white shadow-none hover:bg-[#b32d21]"
+                )}
+              >
+                Ler revista
+              </Link>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Painel do menu (mobile): abre pela esquerda */}
+      {mobileNavOpen ? (
+        <div
+          className="fixed inset-0 z-[100] flex lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navegação"
+          id="menu-principal-mobile"
+        >
+          <div className="flex h-full w-[min(100%,22rem)] flex-col border-r border-zinc-200 bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
+              <span className="font-serif text-base font-semibold text-zinc-900">Menu</span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="shrink-0"
+                aria-label="Fechar"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                <X className="size-5" />
+              </Button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                onSearch(e);
+                setMobileNavOpen(false);
+              }}
+              className="border-b border-zinc-100 p-3"
+            >
+              <label htmlFor={`${searchId}-drawer`} className="sr-only">
+                Procurar no portal
+              </label>
+              <div className="relative">
+                <input
+                  id={`${searchId}-drawer`}
+                  name="q"
+                  type="search"
+                  placeholder="Procurar..."
+                  className="w-full rounded-lg border border-zinc-300 bg-zinc-50 py-2.5 pr-10 pl-3 text-sm"
+                  autoComplete="off"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-1.5 text-zinc-500"
+                  aria-label="Pesquisar"
+                >
+                  <Search className="size-4" />
+                </button>
+              </div>
+            </form>
+
+            <nav className="flex flex-1 flex-col overflow-y-auto px-2 py-3 pb-[max(1rem,env(safe-area-inset-bottom))]" aria-label="Secções do site">
+              {mainNav.map((item) => {
+                const active = isNavActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "rounded-lg px-3 py-3 text-[0.95rem] font-medium text-zinc-800 transition hover:bg-zinc-100",
+                      active && "bg-zinc-100 font-semibold text-zinc-900"
+                    )}
+                    onClick={() => setMobileNavOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+              <Link
+                href="/contato"
+                className="mt-2 rounded-lg px-3 py-3 text-[0.95rem] font-medium text-zinc-600 hover:bg-zinc-50"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Acessibilidade / Contato
+              </Link>
+            </nav>
+          </div>
+          <button
+            type="button"
+            className="min-h-0 min-w-0 flex-1 bg-zinc-950/50 backdrop-blur-[2px]"
+            aria-label="Fechar menu"
+            onClick={() => setMobileNavOpen(false)}
+          />
+        </div>
+      ) : null}
     </header>
   );
 }
