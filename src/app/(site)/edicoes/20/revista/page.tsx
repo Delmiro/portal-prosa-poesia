@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export default function RevistaInterativaPage() {
   return (
     <div className="pb-8 pt-4 sm:pb-12 sm:pt-6">
-      <div className="mx-auto max-w-5xl px-3 sm:px-6">
+      <div className="mx-auto max-w-5xl pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] sm:px-6">
         <Link
           href="/edicoes/20"
           className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-2 -ml-1")}
@@ -20,7 +20,7 @@ export default function RevistaInterativaPage() {
         </h1>
       </div>
 
-      <div className="mx-auto mt-6 w-full max-w-[min(100%,96rem)] px-2 py-4 sm:mt-8 sm:px-4 lg:px-6">
+      <div className="mx-auto mt-6 w-full min-w-0 max-w-[min(100%,96rem)] py-4 pl-[max(0.5rem,env(safe-area-inset-left))] pr-[max(0.5rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:mt-8 sm:pl-4 sm:pr-4 lg:px-6">
         <MagazineFlipbook />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/site";
@@ -25,6 +25,15 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: `${siteConfig.institution}. ${siteConfig.description}`,
+};
+
+/** Escala correta em telemóveis + notch; permite zoom de acessibilidade. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#f4f4f5",
 };
 
 export default function RootLayout({
