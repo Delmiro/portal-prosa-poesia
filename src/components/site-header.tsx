@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
-import { BookOpen, Instagram, Menu, Search, X } from "lucide-react";
+import { BookOpen, Menu, Search, X } from "lucide-react";
 import { mainNav, siteConfig } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
+import { InstagramOriginalIcon } from "@/components/instagram-original-icon";
 import { cn } from "@/lib/utils";
 
 /** Topo institucional; links e ativos no estilo editorial (smashingmagazine.com). */
-const BLUE_TOP = "bg-[#003366]";
-const LINK_ACCENT = "text-[#d33a2c] hover:text-[#a82a20] hover:underline";
+const BLUE_TOP = "terracotta-gold ornate-band";
+const LINK_ACCENT = "text-primary hover:text-primary/80 hover:underline";
 const ACTIVE_NAV =
-  "border-t-[3px] border-[#d33a2c] bg-[#fffdf9]/80 text-[#1a1a1a] font-medium";
+  "border-t-[3px] border-primary bg-[#fffdf9]/80 text-[#1a1a1a] font-medium";
 
 const quickLinks = [
   { href: "/autores", label: "Autores" },
@@ -73,7 +74,7 @@ export function SiteHeader() {
   return (
     <header id="topo" className="relative z-10 text-zinc-900">
       {/* ——— Mobile: barra compacta (estilo apps de notícias / NYT) ——— */}
-      <div className="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 shadow-[0_1px_0_rgba(0,0,0,0.06)] backdrop-blur-md supports-[backdrop-filter]:bg-white/90 lg:hidden">
+      <div className="terracotta-gold ornate-band sticky top-0 z-40 border-b border-[var(--gold-strong)] shadow-[0_1px_0_rgba(0,0,0,0.18)] lg:hidden">
         <div
           className="site-container grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-2 py-2.5 pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))]"
           style={{ minHeight: "3.25rem" }}
@@ -82,7 +83,7 @@ export function SiteHeader() {
             type="button"
             variant="ghost"
             size="icon"
-            className="size-10 shrink-0 text-zinc-900 hover:bg-zinc-100"
+            className="size-10 shrink-0 text-white hover:bg-white/15"
             aria-label="Abrir menu"
             aria-expanded={mobileNavOpen}
             aria-controls="menu-principal-mobile"
@@ -93,7 +94,7 @@ export function SiteHeader() {
 
           <Link
             href="/"
-            className="min-w-0 justify-self-center text-center font-serif text-[0.95rem] font-semibold leading-tight tracking-tight text-zinc-900 sm:text-base"
+            className="min-w-0 justify-self-center text-center font-serif text-[0.95rem] font-semibold leading-tight tracking-tight text-white sm:text-base"
           >
             <span className="line-clamp-2">{siteConfig.name}</span>
           </Link>
@@ -103,7 +104,7 @@ export function SiteHeader() {
               href="/edicoes/20/revista"
               className={cn(
                 buttonVariants({ size: "sm" }),
-                "h-9 gap-1 border-0 bg-[#d33a2c] px-2.5 text-xs font-semibold text-white shadow-none hover:bg-[#b32d21] sm:px-3"
+                "ornate-action h-9 gap-1 border-0 bg-primary px-2.5 text-xs font-semibold text-white shadow-none hover:bg-[var(--primary-strong)] sm:px-3"
               )}
               aria-label="Ler revista"
             >
@@ -114,15 +115,15 @@ export function SiteHeader() {
               href={siteConfig.instagram.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex size-9 shrink-0 items-center justify-center rounded-full text-zinc-700 transition hover:bg-zinc-100"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full text-white/90 transition hover:bg-white/15 hover:text-white"
               aria-label={`Instagram ${siteConfig.instagram.handle}`}
             >
-              <Instagram className="size-[1.15rem]" />
+              <InstagramOriginalIcon className="size-6" />
             </a>
           </div>
         </div>
 
-        <div className="border-t border-zinc-100 bg-zinc-50/80">
+        <div className="border-t border-[var(--gold-strong)]/70 bg-[#fff7ea]">
           <nav
             id="menu-principal"
             className="site-container flex flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -137,8 +138,8 @@ export function SiteHeader() {
                   className={cn(
                     "shrink-0 whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-[0.8rem] font-medium text-zinc-600 transition first:pl-[max(0.25rem,env(safe-area-inset-left))] last:pr-[max(0.25rem,env(safe-area-inset-right))] sm:text-sm",
                     active
-                      ? "border-[#d33a2c] text-[#d33a2c]"
-                      : "border-transparent hover:text-[#d33a2c]"
+                      ? "border-primary text-primary"
+                      : "border-transparent hover:text-primary"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
@@ -156,7 +157,7 @@ export function SiteHeader() {
           <div className="site-container flex items-center justify-end gap-2 py-1.5">
             <Link
               href="/sobre"
-              className="rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
+              className="rounded-full border border-[var(--gold-strong)] bg-[linear-gradient(180deg,#f6da97_0%,#e8be63_100%)] px-2.5 py-1 text-[11px] font-semibold text-[#4a3215] shadow-sm hover:brightness-95 sm:px-3 sm:text-xs"
             >
               Acesso à Informação
             </Link>
@@ -164,7 +165,7 @@ export function SiteHeader() {
               href="https://www.gov.br/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#f5c400] px-2.5 py-1 text-[11px] font-semibold text-zinc-900 shadow-sm hover:bg-[#e6b800] sm:px-3 sm:text-xs"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--gold-strong)] bg-[linear-gradient(180deg,#f6da97_0%,#e8be63_100%)] px-2.5 py-1 text-[11px] font-semibold text-[#4a3215] shadow-sm hover:brightness-95 sm:px-3 sm:text-xs"
             >
               <span aria-hidden>🇧🇷</span>
               BRASIL
@@ -215,7 +216,7 @@ export function SiteHeader() {
               <span className="font-medium">Fonte:</span>
               <button
                 type="button"
-                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                className="cursor-pointer bg-transparent font-semibold text-primary hover:underline"
                 onClick={() => setFontPct((p) => Math.min(130, p + 6))}
               >
                 A+
@@ -225,7 +226,7 @@ export function SiteHeader() {
               </span>
               <button
                 type="button"
-                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                className="cursor-pointer bg-transparent font-semibold text-primary hover:underline"
                 onClick={() => setFontPct((p) => Math.max(82, p - 6))}
               >
                 A-
@@ -235,7 +236,7 @@ export function SiteHeader() {
               </span>
               <button
                 type="button"
-                className="cursor-pointer bg-transparent font-semibold text-[#d33a2c] hover:underline"
+                className="cursor-pointer bg-transparent font-semibold text-primary hover:underline"
                 onClick={() => setFontPct(100)}
               >
                 A
@@ -248,7 +249,7 @@ export function SiteHeader() {
           <div className="site-container flex flex-col gap-5 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8 sm:py-5">
             <Link href="/" className="group flex max-w-xl shrink-0 gap-3 sm:gap-4">
               <span
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-sm bg-[#d33a2c] font-bold uppercase leading-none text-white sm:h-[4.5rem] sm:w-[4.5rem] sm:text-sm"
+                className="terracotta-gold ornate-trim flex h-14 w-14 shrink-0 items-center justify-center rounded-sm font-bold uppercase leading-none text-white sm:h-[4.5rem] sm:w-[4.5rem] sm:text-sm"
                 aria-hidden
               >
                 AL
@@ -288,12 +289,12 @@ export function SiteHeader() {
                   name="q"
                   type="search"
                   placeholder="Procurar..."
-                  className="w-full rounded border border-zinc-300 bg-white py-2 pr-10 pl-3 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-[#d33a2c] focus:outline-none focus:ring-1 focus:ring-[#d33a2c]"
+                  className="w-full rounded border border-zinc-300 bg-white py-2 pr-10 pl-3 text-sm text-zinc-800 placeholder:text-zinc-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   autoComplete="off"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-1.5 text-zinc-500 hover:bg-zinc-200 hover:text-[#d33a2c]"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-1.5 text-zinc-500 hover:bg-zinc-200 hover:text-primary"
                   aria-label="Pesquisar"
                 >
                   <Search className="size-4" />
@@ -304,16 +305,16 @@ export function SiteHeader() {
                   href={siteConfig.instagram.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex size-8 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-600 hover:border-[#d33a2c] hover:text-[#d33a2c]"
+                  className="flex size-10 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-600 hover:border-primary hover:text-primary"
                   aria-label={`Instagram ${siteConfig.instagram.handle}`}
                 >
-                  <Instagram className="size-4" />
+                  <InstagramOriginalIcon className="size-6" />
                 </a>
                 <a
                   href={siteConfig.sitePublicacao.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-zinc-300 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 hover:border-[#d33a2c] hover:text-[#d33a2c] sm:text-[11px]"
+                  className="rounded-full border border-zinc-300 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 hover:border-primary hover:text-primary sm:text-[11px]"
                 >
                   Site
                 </a>
@@ -336,7 +337,7 @@ export function SiteHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "inline-flex items-center border-t-[3px] border-transparent px-2.5 py-2.5 text-sm font-normal text-zinc-700 transition-colors hover:bg-[#fffdf9] hover:text-[#d33a2c] xl:px-3.5",
+                      "inline-flex items-center border-t-[3px] border-transparent px-2.5 py-2.5 text-sm font-normal text-zinc-700 transition-colors hover:bg-[#fffdf9] hover:text-primary xl:px-3.5",
                       active && ACTIVE_NAV
                     )}
                     aria-current={active ? "page" : undefined}
@@ -352,7 +353,7 @@ export function SiteHeader() {
                 href="/edicoes/20/revista"
                 className={cn(
                   buttonVariants({ size: "sm" }),
-                  "gap-1.5 border-0 bg-[#d33a2c] px-3 text-white shadow-none hover:bg-[#b32d21]"
+                  "ornate-action gap-1.5 border-0 bg-primary px-3 text-white shadow-none hover:bg-[var(--primary-strong)]"
                 )}
               >
                 Ler revista

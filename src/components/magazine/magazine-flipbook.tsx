@@ -201,7 +201,7 @@ function MagazineFlipbookInner() {
               type="button"
               variant="secondary"
               size="sm"
-              className="h-10 shrink-0 border-0 bg-[#d33a2c] px-3 text-white shadow-sm hover:bg-[#b32d21] sm:h-9"
+              className="h-10 shrink-0 border-0 bg-primary px-3 text-white shadow-sm hover:bg-[var(--primary-strong)] sm:h-9"
               onClick={flipPrev}
               aria-label="Página anterior"
             >
@@ -215,7 +215,7 @@ function MagazineFlipbookInner() {
               type="button"
               variant="secondary"
               size="sm"
-              className="h-10 shrink-0 border-0 bg-[#d33a2c] px-3 text-white shadow-sm hover:bg-[#b32d21] sm:h-9"
+              className="h-10 shrink-0 border-0 bg-primary px-3 text-white shadow-sm hover:bg-[var(--primary-strong)] sm:h-9"
               onClick={flipNext}
               aria-label="Próxima página"
             >

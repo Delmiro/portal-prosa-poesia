@@ -3,7 +3,7 @@
  */
 export function SkipLinks() {
   const linkClass =
-    "rounded-sm text-[0.8125rem] font-medium text-[#d33a2c] underline-offset-[3px] outline-none hover:underline focus-visible:ring-2 focus-visible:ring-[#d33a2c] focus-visible:ring-offset-2";
+    "rounded-sm text-[0.8125rem] font-medium text-primary underline-offset-[3px] outline-none hover:underline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
 
   return (
     <div className="border-b border-zinc-200/90 bg-[#f7f7f7] print:hidden">

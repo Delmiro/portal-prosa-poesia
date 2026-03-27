@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BookOpen, PenLine } from "lucide-react";
 import {
   autoresEdicao20,
@@ -29,6 +30,18 @@ export default function HomePage() {
           <p className="mt-2 text-center text-sm text-muted-foreground">
             Volume {edicao20Meta.volume}
           </p>
+          <div className="mt-6 flex justify-center">
+            <div className="ornate-trim rounded-full bg-[radial-gradient(circle_at_30%_30%,#fff8ea_0%,#f8edd4_45%,#f1dfb3_100%)] p-2.5 sm:p-3">
+              <Image
+                src="/logo-academia-antonio-sales.png"
+                alt="Logo da Academia de Letras e Artes Antônio Sales"
+                width={176}
+                height={176}
+                className="h-36 w-36 rounded-full border-2 border-[color:var(--gold-soft)]/70 object-cover shadow-md sm:h-44 sm:w-44"
+                priority
+              />
+            </div>
+          </div>
           <h1 className="site-hero-title mt-6 text-center font-serif font-semibold tracking-tight text-zinc-900">
             {siteConfig.name}
           </h1>
@@ -38,12 +51,13 @@ export default function HomePage() {
           <p className="mx-auto mt-6 max-w-2xl text-center text-base leading-relaxed text-zinc-600 sm:text-lg">
             {siteConfig.description}
           </p>
+          <div className="mx-auto mt-6 h-1 w-44 max-w-full rounded-full terracotta-gold ornate-trim" aria-hidden />
           <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
             <Link
               href="/edicoes/20"
               className={cn(
                 buttonVariants({ size: "lg" }),
-                "w-full justify-center gap-2 sm:w-auto has-data-[icon=inline-end]:pr-3"
+                "ornate-action w-full justify-center gap-2 sm:w-auto has-data-[icon=inline-end]:pr-3"
               )}
             >
               Ler edição atual
@@ -66,7 +80,7 @@ export default function HomePage() {
       </section>
 
       <section className="site-container site-section-y">
-        <blockquote className="mx-auto max-w-3xl border-l-4 border-[#d33a2c] pl-5 font-serif text-base leading-relaxed text-zinc-800 italic sm:pl-6 sm:text-lg whitespace-pre-line">
+        <blockquote className="mx-auto max-w-3xl border-l-4 border-primary pl-5 font-serif text-base leading-relaxed text-zinc-800 italic sm:pl-6 sm:text-lg whitespace-pre-line">
           {manifestoRevista}
         </blockquote>
       </section>
@@ -103,7 +117,7 @@ export default function HomePage() {
       <section className="site-container site-section-y">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
-            <h2 className="border-l-4 border-[#d33a2c] pl-4 font-serif text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+            <h2 className="border-l-4 border-primary pl-4 font-serif text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
               Destaques da edição 20
             </h2>
             <p className="mt-2 max-w-xl text-zinc-600">
@@ -112,7 +126,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/edicoes"
-            className="shrink-0 text-sm font-semibold text-[#d33a2c] underline-offset-4 hover:underline"
+            className="shrink-0 text-sm font-semibold text-primary underline-offset-4 hover:underline"
           >
             Ver todas as edições
           </Link>
@@ -122,7 +136,7 @@ export default function HomePage() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="group block overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm transition hover:border-[#d33a2c]/45 hover:shadow-md"
+                className="group block overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm transition hover:border-primary/45 hover:shadow-md"
               >
                 <Thumb16x9
                   src={item.imagemSrc}
@@ -133,7 +147,7 @@ export default function HomePage() {
                   <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-zinc-500 sm:text-xs">
                     {item.tipo} · {item.autor}
                   </p>
-                  <p className="mt-2 font-serif text-base font-medium leading-snug text-zinc-900 group-hover:text-[#d33a2c] sm:text-lg">
+                  <p className="mt-2 font-serif text-base font-medium leading-snug text-zinc-900 group-hover:text-primary sm:text-lg">
                     {item.titulo}
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-600">{item.resumo}</p>
@@ -147,7 +161,7 @@ export default function HomePage() {
       <section className="border-y border-zinc-200 bg-zinc-50 py-14 md:py-20">
         <div className="site-container">
           <div className="flex items-center gap-3">
-            <span className="h-8 w-1 shrink-0 rounded-full bg-[#d33a2c]" aria-hidden />
+            <span className="h-8 w-1 shrink-0 rounded-full bg-primary" aria-hidden />
             <PenLine className="size-5 shrink-0 text-zinc-500" aria-hidden />
             <h2 className="min-w-0 font-serif text-xl font-semibold text-zinc-900 sm:text-2xl">
               Autores nesta edição
@@ -183,7 +197,7 @@ export default function HomePage() {
 
       <section className="site-container site-section-y">
         <div className="flex items-center gap-3">
-          <span className="h-8 w-1 shrink-0 rounded-full bg-[#d33a2c]" aria-hidden />
+          <span className="h-8 w-1 shrink-0 rounded-full bg-primary" aria-hidden />
           <BookOpen className="size-5 shrink-0 text-zinc-500" aria-hidden />
           <h2 className="min-w-0 font-serif text-xl font-semibold text-zinc-900 sm:text-2xl">
             Seções da revista
@@ -199,7 +213,7 @@ export default function HomePage() {
             <Link
               key={section.href}
               href={section.href}
-              className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-[#d33a2c]/50 hover:shadow-md sm:p-6"
+              className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-primary/50 hover:shadow-md sm:p-6"
             >
               <p className="font-serif text-base font-semibold text-zinc-900 sm:text-lg">{section.label}</p>
               <p className="mt-2 text-sm text-zinc-600">{section.desc}</p>

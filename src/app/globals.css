@@ -57,8 +57,11 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Acento editorial (~#d33a2c, estilo smashingmagazine.com) */
-  --primary: oklch(0.52 0.19 25);
+  /* Terracota institucional como cor principal do portal */
+  --primary: #b44f32;
+  --primary-strong: #963f27;
+  --gold-soft: #f0cf7a;
+  --gold-strong: #c4952f;
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -164,6 +167,53 @@
 
   .site-hero-lead {
     font-size: clamp(1rem, 0.5vw + 0.9rem, 1.25rem);
+  }
+
+  /* Detalhe ornamental inspirado no acabamento dourado da indumentária enviada */
+  .ornate-trim {
+    border: 1px solid rgba(196, 149, 47, 0.7);
+    box-shadow:
+      inset 0 0 0 1px rgba(240, 207, 122, 0.55),
+      inset 0 0 0 3px rgba(145, 103, 28, 0.2),
+      0 8px 20px rgba(196, 149, 47, 0.2);
+  }
+
+  .terracotta-gold {
+    background: linear-gradient(135deg, #94412a 0%, var(--primary) 48%, #ca6a48 100%);
+    color: #fff;
+  }
+
+  .ornate-band {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ornate-band::before,
+  .ornate-band::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background:
+      radial-gradient(circle at 3px 2px, rgba(240, 207, 122, 0.95) 1.2px, transparent 1.3px) 0 0 / 10px 4px repeat-x,
+      linear-gradient(90deg, rgba(196, 149, 47, 0.7), rgba(240, 207, 122, 0.8), rgba(196, 149, 47, 0.7));
+    opacity: 0.95;
+  }
+
+  .ornate-band::before {
+    top: 0;
+  }
+
+  .ornate-band::after {
+    bottom: 0;
+  }
+
+  .ornate-action {
+    border: 1px solid rgba(240, 207, 122, 0.75);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 239, 191, 0.25),
+      0 3px 10px rgba(148, 65, 42, 0.35);
   }
 }
 
