@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
 import { BookOpen, Menu, Search, X } from "lucide-react";
-import { mainNav, siteConfig } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { InstagramOriginalIcon } from "@/components/instagram-original-icon";
@@ -16,19 +16,24 @@ const LINK_ACCENT = "text-primary hover:text-primary/80 hover:underline";
 const ACTIVE_NAV =
   "border-t-[3px] border-primary bg-[#fffdf9]/80 text-[#1a1a1a] font-medium";
 
-const quickLinks = [
-  { href: "/autores", label: "Autores" },
-  { href: "/edicoes", label: "Edições" },
-  { href: "/edicoes/20/revista", label: "Leitura folheada" },
-  { href: "/contato", label: "Contatos" },
-] as const;
+export type SiteNavLink = { href: string; label: string };
 
 function isNavActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
+  if (href === "/admin") {
+    return pathname === "/admin" || pathname.startsWith("/admin/");
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  mainNav: SiteNavLink[];
+  quickNav: SiteNavLink[];
+  /** Botão “Ler revista” (ex.: primeira rota de leitura folheada). */
+  ctaRevistaHref: string;
+};
+
+export function SiteHeader({ mainNav, quickNav, ctaRevistaHref }: SiteHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchId = useId();
@@ -101,7 +106,7 @@ export function SiteHeader() {
 
           <div className="flex shrink-0 items-center justify-end gap-1">
             <Link
-              href="/edicoes/20/revista"
+              href={ctaRevistaHref}
               className={cn(
                 buttonVariants({ size: "sm" }),
                 "ornate-action h-9 gap-1 border-0 bg-primary px-2.5 text-xs font-semibold text-white shadow-none hover:bg-[var(--primary-strong)] sm:px-3"
@@ -129,14 +134,14 @@ export function SiteHeader() {
             className="site-container flex flex-nowrap items-stretch gap-0 overflow-x-auto overscroll-x-contain py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Secções do portal"
           >
-            {mainNav.map((item) => {
-              const active = isNavActive(pathname, item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "shrink-0 whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-[0.8rem] font-medium text-zinc-600 transition first:pl-[max(0.25rem,env(safe-area-inset-left))] last:pr-[max(0.25rem,env(safe-area-inset-right))] sm:text-sm",
+              {mainNav.map((item) => {
+                const active = isNavActive(pathname, item.href);
+                return (
+                  <Link
+                    key={`${item.href}-${item.label}-mob`}
+                    href={item.href}
+                    className={cn(
+                      "shrink-0 whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-[0.8rem] font-medium text-zinc-600 transition first:pl-[max(0.25rem,env(safe-area-inset-left))] last:pr-[max(0.25rem,env(safe-area-inset-right))] sm:text-sm",
                     active
                       ? "border-primary text-primary"
                       : "border-transparent hover:text-primary"
@@ -269,8 +274,8 @@ export function SiteHeader() {
 
             <div className="flex min-w-0 flex-1 flex-col items-stretch gap-3 sm:max-w-xl sm:items-end">
               <nav aria-label="Serviços e atalhos" className="flex flex-wrap justify-start gap-x-4 gap-y-1 sm:justify-end">
-                {quickLinks.map((item) => (
-                  <Link key={item.href} href={item.href} className={cn("text-xs font-medium sm:text-sm", LINK_ACCENT)}>
+                {quickNav.map((item) => (
+                  <Link key={`${item.href}-${item.label}`} href={item.href} className={cn("text-xs font-medium sm:text-sm", LINK_ACCENT)}>
                     {item.label}
                   </Link>
                 ))}
@@ -334,7 +339,7 @@ export function SiteHeader() {
                 const active = isNavActive(pathname, item.href);
                 return (
                   <Link
-                    key={item.href}
+                    key={`${item.href}-${item.label}-desk`}
                     href={item.href}
                     className={cn(
                       "inline-flex items-center border-t-[3px] border-transparent px-2.5 py-2.5 text-sm font-normal text-zinc-700 transition-colors hover:bg-[#fffdf9] hover:text-primary xl:px-3.5",
@@ -350,7 +355,7 @@ export function SiteHeader() {
 
             <div className="flex shrink-0 items-center gap-2 py-2">
               <Link
-                href="/edicoes/20/revista"
+                href={ctaRevistaHref}
                 className={cn(
                   buttonVariants({ size: "sm" }),
                   "ornate-action gap-1.5 border-0 bg-primary px-3 text-white shadow-none hover:bg-[var(--primary-strong)]"
@@ -421,7 +426,7 @@ export function SiteHeader() {
                 const active = isNavActive(pathname, item.href);
                 return (
                   <Link
-                    key={item.href}
+                    key={`${item.href}-${item.label}-drawer`}
                     href={item.href}
                     className={cn(
                       "rounded-lg px-3 py-3 text-[0.95rem] font-medium text-zinc-800 transition hover:bg-zinc-100",

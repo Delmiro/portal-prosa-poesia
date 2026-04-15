@@ -1,6 +1,7 @@
 import { PageHeading } from "@/components/page-heading";
+import { CmsSectionEntryList } from "@/components/cms/cms-section-entry-list";
 
-export default function GaleriaPage() {
+export default async function GaleriaPage() {
   return (
     <div>
       <PageHeading
@@ -8,9 +9,7 @@ export default function GaleriaPage() {
         description="Imagens em proporção 16:9, otimizadas para leitura em tela."
       />
       <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <p className="text-center text-muted-foreground">
-          Em breve: galerias por edição com lightbox e legendas.
-        </p>
+        <CmsSectionEntryList section="galeria" />
       </div>
     </div>
   );

@@ -136,7 +136,7 @@ flowchart LR
   Issue --> Flip[Leitura folheada]
   Admin[Admin/Autor] --> Login[Login JWT]
   Login --> CRUD[CRUD + Upload]
-  CRUD --> API[Spring Boot API]
+  CRUD --> API[Next.js API /api]
   API --> DB[(PostgreSQL)]
   CRUD --> CDN[Cloudinary]
 ```

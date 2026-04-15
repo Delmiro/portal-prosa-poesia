@@ -1,0 +1,43 @@
+# PostgreSQL + Next.js (API integrada em /api)
+# 1º: docker compose up --build
+# Health: GET http://localhost:3000/api/health
+# Conta seed (após npm run db:seed): admin@localhost / ChangeMe123!
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: portal
+      POSTGRES_DB: portal
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://portal:portal@db:5432/portal
+      JWT_SECRET: ${JWT_SECRET:-docker-dev-jwt-secret-change-me-min-32-chars!!}
+      PUBLIC_BASE_URL: http://localhost:3000
+      UPLOAD_DIR: /app/uploads
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL:-admin@localhost}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-ChangeMe123!}
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  uploads:

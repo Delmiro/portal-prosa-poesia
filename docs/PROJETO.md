@@ -9,20 +9,17 @@ Portal onde autores publicam **mensalmente** conteúdos literários (editorial, 
 | Camada | Tecnologia | Hospedagem sugerida |
 |--------|------------|---------------------|
 | Frontend | Next.js, React, Tailwind, shadcn/ui, **StPageFlip** via `react-pageflip` | Vercel |
-| Backend | Spring Boot (API REST, JWT) | Render ou Railway |
+| Backend / API | Next.js Route Handlers (`/api`), Drizzle, JWT | Vercel ou Node (mesmo deploy do site) |
 | Banco | PostgreSQL | Supabase ou Neon |
 | Imagens | Cloudinary (crop 16:9, compressão, CDN, marca d’água opcional) | Cloudinary |
 
 ## Arquitetura lógica
 
 ```
-Next.js (SSR/ISR, SEO)
-    │  HTTPS + JSON + JWT
-    ▼
-Spring Boot (regras de negócio, validação, uploads assinados)
+Next.js (páginas + API `/api`, SSR/SEO)
     │
-    ├── PostgreSQL
-    └── URLs de mídia → Cloudinary
+    ├── PostgreSQL (Drizzle ORM)
+    └── Uploads em disco (dev) / Cloudinary (produção sugerida)
 ```
 
 ## Experiência de leitura (revista)

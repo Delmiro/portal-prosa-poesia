@@ -2,7 +2,19 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 import { InstagramOriginalIcon } from "@/components/instagram-original-icon";
 
-export function SiteFooter() {
+type FooterLink = { href: string; label: string };
+
+type SiteFooterProps = {
+  footerRevista: FooterLink[];
+  footerConteudo: FooterLink[];
+  footerContacto: FooterLink[];
+};
+
+export function SiteFooter({
+  footerRevista,
+  footerConteudo,
+  footerContacto,
+}: SiteFooterProps) {
   const { instagram } = siteConfig;
 
   return (
@@ -22,51 +34,25 @@ export function SiteFooter() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/75">Revista</p>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li>
-                <Link href="/edicoes" className="text-white/90 hover:text-white hover:underline">
-                  Edições
-                </Link>
-              </li>
-              <li>
-                <Link href="/edicoes/20/revista" className="text-white/90 hover:text-white hover:underline">
-                  Leitura folheada
-                </Link>
-              </li>
-              <li>
-                <Link href="/editorial" className="text-white/90 hover:text-white hover:underline">
-                  Editorial
-                </Link>
-              </li>
-              <li>
-                <Link href="/galeria" className="text-white/90 hover:text-white hover:underline">
-                  Galeria
-                </Link>
-              </li>
+              {footerRevista.map((item) => (
+                <li key={`${item.href}-${item.label}`}>
+                  <Link href={item.href} className="text-white/90 hover:text-white hover:underline">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/75">Conteúdos</p>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li>
-                <Link href="/poemas" className="text-white/90 hover:text-white hover:underline">
-                  Poemas
-                </Link>
-              </li>
-              <li>
-                <Link href="/contos" className="text-white/90 hover:text-white hover:underline">
-                  Contos
-                </Link>
-              </li>
-              <li>
-                <Link href="/cronicas" className="text-white/90 hover:text-white hover:underline">
-                  Crônicas
-                </Link>
-              </li>
-              <li>
-                <Link href="/artigos" className="text-white/90 hover:text-white hover:underline">
-                  Artigos
-                </Link>
-              </li>
+              {footerConteudo.map((item) => (
+                <li key={`${item.href}-${item.label}`}>
+                  <Link href={item.href} className="text-white/90 hover:text-white hover:underline">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -92,21 +78,13 @@ export function SiteFooter() {
               <span>{instagram.handle}</span>
             </a>
             <ul className="mt-6 space-y-2.5 text-sm">
-              <li>
-                <Link href="/autores" className="text-white/90 hover:text-white hover:underline">
-                  Autores
-                </Link>
-              </li>
-              <li>
-                <Link href="/sobre" className="text-white/90 hover:text-white hover:underline">
-                  Sobre
-                </Link>
-              </li>
-              <li>
-                <Link href="/contato" className="text-white/90 hover:text-white hover:underline">
-                  Contato
-                </Link>
-              </li>
+              {footerContacto.map((item) => (
+                <li key={`${item.href}-${item.label}`}>
+                  <Link href={item.href} className="text-white/90 hover:text-white hover:underline">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

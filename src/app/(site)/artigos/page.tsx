@@ -1,6 +1,7 @@
 import { PageHeading } from "@/components/page-heading";
+import { CmsSectionEntryList } from "@/components/cms/cms-section-entry-list";
 
-export default function ArtigosPage() {
+export default async function ArtigosPage() {
   return (
     <div>
       <PageHeading
@@ -8,9 +9,7 @@ export default function ArtigosPage() {
         description="Ensaios, crônicas e artigos de fundo."
       />
       <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <p className="text-center text-muted-foreground">
-          Em breve: artigos com imagem de destaque e metadados da edição.
-        </p>
+        <CmsSectionEntryList section="artigos" />
       </div>
     </div>
   );

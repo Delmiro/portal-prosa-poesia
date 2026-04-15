@@ -27,5 +27,6 @@ export const mainNav: NavItem[] = [
   { href: "/artigos", label: "Artigos" },
   { href: "/galeria", label: "Galeria" },
   { href: "/sobre", label: "Sobre" },
+  { href: "/admin", label: "Administração" },
   { href: "/contato", label: "Contato" },
 ];

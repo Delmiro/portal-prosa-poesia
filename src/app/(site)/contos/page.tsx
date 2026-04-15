@@ -1,6 +1,7 @@
 import { PageHeading } from "@/components/page-heading";
+import { CmsSectionEntryList } from "@/components/cms/cms-section-entry-list";
 
-export default function ContosPage() {
+export default async function ContosPage() {
   return (
     <div>
       <PageHeading
@@ -8,9 +9,7 @@ export default function ContosPage() {
         description="Ficção curta com destaque visual e tempo de leitura estimado."
       />
       <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <p className="text-center text-muted-foreground">
-          Em breve: contos publicados nas edições da revista.
-        </p>
+        <CmsSectionEntryList section="contos" />
       </div>
     </div>
   );

@@ -9,13 +9,15 @@ import {
   edicao20Meta,
   manifestoRevista,
 } from "@/content/edicao-20";
+import { getLatestPublishedEditionLinks } from "@/lib/cms-public";
 import { siteConfig } from "@/lib/site";
 import { AuthorAvatar } from "@/components/author-avatar";
 import { Thumb16x9 } from "@/components/thumb-16x9";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { edicaoHref, flipHref } = await getLatestPublishedEditionLinks();
   return (
     <div className="min-w-0">
       <section className="relative overflow-hidden border-b border-zinc-200 bg-white">
@@ -54,7 +56,7 @@ export default function HomePage() {
           <div className="mx-auto mt-6 h-1 w-44 max-w-full rounded-full terracotta-gold ornate-trim" aria-hidden />
           <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
             <Link
-              href="/edicoes/20"
+              href={edicaoHref}
               className={cn(
                 buttonVariants({ size: "lg" }),
                 "ornate-action w-full justify-center gap-2 sm:w-auto has-data-[icon=inline-end]:pr-3"
@@ -70,7 +72,7 @@ export default function HomePage() {
               Sobre o projeto
             </Link>
             <Link
-              href="/edicoes/20/revista"
+              href={flipHref}
               className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full justify-center sm:w-auto")}
             >
               Virar páginas como revista

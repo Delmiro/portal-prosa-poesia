@@ -34,27 +34,15 @@ portal-revista/
 │   ├── hooks/              # useMediaQuery, tema, etc.
 │   └── lib/                # utils, siteConfig, fetch API
 ├── docs/                   # Documentação do produto e BD
-├── backend/                # API Spring Boot (projeto Maven)
+├── docker/                 # Postgres init (SQL)
+├── src/db/                 # Drizzle schema + seed
+├── src/app/api/            # API REST (auth, admin, público)
 └── README.md
 ```
 
-## Backend (`/backend`)
+## API (Next.js Route Handlers)
 
-```
-backend/
-├── pom.xml
-├── src/main/java/com/portalrevista/
-│   ├── PortalRevistaApplication.java
-│   ├── config/             # Security, CORS, JWT, OpenAPI
-│   ├── domain/             # Entidades JPA
-│   ├── repository/       # Spring Data JPA
-│   ├── service/            # Regras de negócio
-│   └── web/
-│       ├── controller/     # REST
-│       └── dto/            # Request/response
-└── src/main/resources/
-    └── application.yml
-```
+A API vive em `src/app/api/` (auth, admin, público, mídia). Persistência em PostgreSQL com Drizzle (`src/db/schema.ts`).
 
 ## Convenções
 

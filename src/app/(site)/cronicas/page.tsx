@@ -1,6 +1,7 @@
 import { PageHeading } from "@/components/page-heading";
+import { CmsSectionEntryList } from "@/components/cms/cms-section-entry-list";
 
-export default function CronicasPage() {
+export default async function CronicasPage() {
   return (
     <div>
       <PageHeading
@@ -8,9 +9,7 @@ export default function CronicasPage() {
         description="Textos curtos de atualidade e observação — integrados por edição da revista."
       />
       <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <p className="text-center text-muted-foreground">
-          Em breve: listagem alimentada pela API Spring Boot (entidade Cronica).
-        </p>
+        <CmsSectionEntryList section="cronicas" />
       </div>
     </div>
   );

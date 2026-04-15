@@ -1,17 +1,23 @@
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button-variants";
+"use client";
 
-export default function AdminHomePage() {
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getToken } from "@/lib/admin/token";
+
+export default function AdminIndexPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (getToken()) {
+      router.replace("/admin/dashboard");
+    } else {
+      router.replace("/admin/login");
+    }
+  }, [router]);
+
   return (
-    <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
-      <h1 className="font-serif text-2xl font-semibold">Painel</h1>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-        Estrutura reservada para autenticação, gestão de autores, edições mensais, textos
-        (artigos, poemas, contos, crônicas), galerias e uploads via Cloudinary.
-      </p>
-      <Link href="/" className={buttonVariants({ variant: "outline", className: "mt-6" })}>
-        Voltar ao site público
-      </Link>
+    <div className="flex min-h-[40vh] items-center justify-center">
+      <p className="text-sm text-muted-foreground">A redirecionar…</p>
     </div>
   );
 }
