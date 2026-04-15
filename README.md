@@ -87,6 +87,24 @@ No painel **Workers & Pages → Settings → Builds & deployments**, use por exe
 
 **Docker** e `next start` usam `npm run build:next` (só `next build`, sem bundle Worker).
 
+### PostgreSQL na Cloudflare (a base não é criada automaticamente)
+
+A Cloudflare **não cria** uma instância PostgreSQL. O Worker só corre código; a base tem de existir **noutro serviço**.
+
+1. Crie um projeto em **[Neon](https://neon.tech)** (plano gratuito serve). A connection string deve incluir o hostname **`*.neon.tech`** (é o formato que o Worker aceita com o driver HTTP).
+2. No painel **Workers → o seu projeto → Settings → Variables and Secrets**, adicione:
+   - `DATABASE_URL` — **Secret**, com a connection string do Neon;
+   - `JWT_SECRET` — **Secret** (mínimo 32 caracteres em produção).
+3. **Crie as tabelas** (uma vez), executando o script contra essa base (no seu PC, com `psql` instalado, ou no SQL Editor do Neon):
+
+```bash
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f docker/postgres/cloudflare-bootstrap.sql
+```
+
+4. (Opcional) Crie o utilizador admin localmente apontando `.env.local` para o mesmo Neon: `npm run db:seed`.
+
+O ficheiro [`wrangler.jsonc`](wrangler.jsonc) define `CF_WORKER=1` em **vars** para o código usar o driver Neon no Worker (o pacote `pg` não funciona no runtime Workers).
+
 ## Documentação
 
 | Documento | Conteúdo |

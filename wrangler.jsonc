@@ -19,5 +19,8 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+  "vars": {
+    "CF_WORKER": "1"
   }
 }
