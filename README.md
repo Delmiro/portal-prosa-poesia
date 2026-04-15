@@ -76,6 +76,17 @@ docker compose up --build
 - O serviço `web` corre `npm run db:seed` no arranque (ignora erro se já existir dados).  
 - Postgres na porta **5432** (mapeada para o host).
 
+## Cloudflare Workers (OpenNext)
+
+O deploy em Workers usa `@opennextjs/cloudflare`. O ficheiro [`wrangler.jsonc`](wrangler.jsonc) define o Worker e a binding **`WORKER_SELF_REFERENCE`**: o campo `service` tem de ser **igual** ao `name` (aqui: `portal-prosa-poesia`). Se mudar o nome do Worker no painel, atualize **os dois** em `wrangler.jsonc`.
+
+No painel **Workers & Pages → Settings → Builds & deployments**, use por exemplo:
+
+- **Build command:** `npm ci && npm run build:cloudflare`
+- **Deploy command:** `npx wrangler deploy` (ou `npm run deploy:cloudflare` se preferir build + deploy num só passo)
+
+Não use apenas `npm run build` (Next puro) para publicar no Worker: o output correto é gerado por `build:cloudflare`.
+
 ## Documentação
 
 | Documento | Conteúdo |
