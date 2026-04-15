@@ -82,10 +82,10 @@ O deploy em Workers usa `@opennextjs/cloudflare`. O ficheiro [`wrangler.jsonc`](
 
 No painel **Workers & Pages → Settings → Builds & deployments**, use por exemplo:
 
-- **Build command:** `npm ci && npm run build` — o script `build` corre **OpenNext** (`opennextjs-cloudflare build`), que gera `.open-next/` e config compilada exigidos pelo deploy.
+- **Build command:** `npm ci && npm run build:cloudflare` — **não** use `npm run build` aqui: o script `build` é só `next build` (o OpenNext chama-o por dentro). Se `build` for o comando OpenNext, ocorre **recursão infinita** e o deploy falha.
 - **Deploy command:** `npx wrangler deploy` (ou `npm run deploy:cloudflare` para build + deploy num só passo)
 
-Para **Docker** ou build Next só em Node (`next start`), use `npm run build:next` em vez de `npm run build`.
+**Docker** e `next start` continuam a usar `npm run build` (`next build` apenas).
 
 ## Documentação
 
