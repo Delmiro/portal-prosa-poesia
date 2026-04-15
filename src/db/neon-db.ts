@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 import * as schema from "./schema";
 
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
@@ -15,7 +16,7 @@ function isNeonHost(url: string): boolean {
 }
 
 export function getNeonDb(): NeonHttpDatabase<typeof schema> {
-  const url = process.env.DATABASE_URL?.trim();
+  const url = getRuntimeEnv("DATABASE_URL");
   if (!url) {
     throw new Error("DATABASE_URL não definido");
   }

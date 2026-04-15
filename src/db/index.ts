@@ -1,4 +1,5 @@
 import * as schema from "./schema";
+import { isCloudflareWorkerRuntime, getRuntimeEnv } from "@/lib/runtime-env";
 
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
 
@@ -7,7 +8,7 @@ export type AppDatabase = NeonHttpDatabase<typeof schema>;
 
 /** Indica se existe cadeia de ligação (útil para mensagens em rotas API). */
 export function isDatabaseConfigured(): boolean {
-  return Boolean(process.env.DATABASE_URL?.trim());
+  return Boolean(getRuntimeEnv("DATABASE_URL"));
 }
 
 /**
@@ -15,7 +16,7 @@ export function isDatabaseConfigured(): boolean {
  * Docker/local: `pg` via `./pg-backend` (carregamento tardio para não ir no bundle do Worker).
  */
 export function getDb(): AppDatabase {
-  if (process.env.CF_WORKER === "1") {
+  if (isCloudflareWorkerRuntime()) {
     // Import estático apenas de módulos compatíveis com Workers
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getNeonDb } = require("./neon-db") as typeof import("./neon-db");
@@ -27,7 +28,7 @@ export function getDb(): AppDatabase {
 
 /** Apenas em ambiente Node (não disponível no Worker). */
 export function getPool() {
-  if (process.env.CF_WORKER === "1") {
+  if (isCloudflareWorkerRuntime()) {
     throw new Error("getPool() não está disponível no Worker. Use getDb().");
   }
   // eslint-disable-next-line @typescript-eslint/no-require-imports

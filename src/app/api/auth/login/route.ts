@@ -12,6 +12,7 @@ import {
   isDatabaseUnreachable,
 } from "@/lib/db-connection-error";
 import { emailSchema } from "@/lib/validation/email";
+import { isCloudflareWorkerRuntime } from "@/lib/runtime-env";
 
 const Body = z.object({
   email: emailSchema,
@@ -21,13 +22,10 @@ const Body = z.object({
 export async function POST(request: Request) {
   try {
     if (!isDatabaseConfigured()) {
-      return NextResponse.json(
-        {
-          message:
-            "Base de dados não configurada. Copie .env.example para .env.local e defina DATABASE_URL (PostgreSQL em execução).",
-        },
-        { status: 503 },
-      );
+      const message = isCloudflareWorkerRuntime()
+        ? "Base de dados não configurada. No Cloudflare: Workers → Settings → Secrets e adicione DATABASE_URL (Neon) e JWT_SECRET; faça redeploy."
+        : "Base de dados não configurada. Copie .env.example para .env.local e defina DATABASE_URL (PostgreSQL em execução).";
+      return NextResponse.json({ message }, { status: 503 });
     }
     const json = await request.json();
     const { email, password } = Body.parse(json);

@@ -1,8 +1,9 @@
 import { SignJWT, jwtVerify } from "jose";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 
 const getSecret = () => {
   const s =
-    process.env.JWT_SECRET ??
+    getRuntimeEnv("JWT_SECRET") ??
     (process.env.NODE_ENV !== "production"
       ? "dev-only-jwt-secret-change-me-min-32-chars!!"
       : undefined);

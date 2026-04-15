@@ -20,6 +20,8 @@
   "images": {
     "binding": "IMAGES"
   },
+  // Não coloque DATABASE_URL / JWT_SECRET aqui (risco + o deploy substitui `vars`).
+  // Use Secrets no painel (Workers → Settings) ou: wrangler secret put DATABASE_URL
   "vars": {
     "CF_WORKER": "1"
   }

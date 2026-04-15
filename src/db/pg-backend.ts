@@ -4,6 +4,7 @@
  */
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 import * as schema from "./schema";
 
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
@@ -13,7 +14,7 @@ let pgDb: NodePgDatabase<typeof schema> | undefined;
 
 export function getPgDb(): NodePgDatabase<typeof schema> {
   if (!pgDb) {
-    const url = process.env.DATABASE_URL?.trim();
+    const url = getRuntimeEnv("DATABASE_URL");
     if (!url) {
       throw new Error("DATABASE_URL não definido");
     }
@@ -24,7 +25,7 @@ export function getPgDb(): NodePgDatabase<typeof schema> {
 }
 
 export function getPool(): Pool {
-  const url = process.env.DATABASE_URL?.trim();
+  const url = getRuntimeEnv("DATABASE_URL");
   if (!url) {
     throw new Error("DATABASE_URL não definido");
   }
